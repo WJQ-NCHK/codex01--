@@ -1,6 +1,17 @@
-# 方块世界 3D 网页游戏
+# 方块世界
 
-一个基于 WebGL 的第一人称方块世界游戏。游戏主体位于 `index.html`，通过 Next/Vite 应用壳运行，也可以使用静态服务器直接预览。
+一个桌面优先的第一人称 3D 体素生存游戏。项目使用 React 19、TypeScript、Three.js WebGPU/WebGL 2 双后端和 Web Worker，通过 Vinext/Vite 构建并可部署到 Cloudflare Worker。
+
+## 玩法
+
+- `W A S D`：移动
+- 鼠标：第一人称视角
+- `Space`：跳跃
+- `Shift`：疾跑
+- 鼠标左键：持续挖掘
+- 鼠标右键：放置方块或进食
+- 数字键 `1-9` / 滚轮：切换快捷栏
+- `Esc`：暂停并释放鼠标
 
 ## 开发
 
@@ -9,22 +20,12 @@ npm install
 npm run dev
 ```
 
-构建与检查：
+## 验证
 
 ```bash
-npm run build
 npm test
+npm run typecheck
 npm run lint
 ```
 
-## 操作
-
-- `W A S D`：移动
-- 鼠标：控制视角
-- `空格`：跳跃
-- `Shift`：疾跑
-- 鼠标左键：挖掘方块
-- 鼠标右键：放置方块
-- 数字键：切换快捷栏
-- 鼠标滚轮：切换快捷栏
-- `Esc`：暂停并释放鼠标
+在 URL 添加 `?renderer=webgl2` 可强制使用 WebGL 2 回退后端。世界、背包、玩家状态和设置保存在当前浏览器的 IndexedDB 中。

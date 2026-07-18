@@ -4,18 +4,22 @@ import test from "node:test";
 
 const projectRoot = new URL("../", import.meta.url);
 
-test("keeps the game entry point wired into the app shell", async () => {
-  const [game, page, layout] = await Promise.all([
-    readFile(new URL("index.html", projectRoot), "utf8"),
+test("renders the game directly through the app route", async () => {
+  const [page, gameApp, layout] = await Promise.all([
     readFile(new URL("app/page.tsx", projectRoot), "utf8"),
+    readFile(new URL("app/game-app.tsx", projectRoot), "utf8"),
     readFile(new URL("app/layout.tsx", projectRoot), "utf8"),
   ]);
 
-  assert.match(game, /<canvas\b/i);
-  assert.match(game, /WebGL/i);
-  assert.match(page, /src=["']\/index\.html["']/);
+  assert.doesNotMatch(page, /iframe/i);
+  assert.match(page, /GameApp/);
+  assert.match(gameApp, /<canvas\b/i);
+  assert.match(gameApp, /WEBGPU \/ WEBGL 2/i);
+  assert.match(gameApp, /data-game-root/);
   assert.match(layout, /lang=["']zh-CN["']/);
+  assert.match(layout, /方块世界/);
 
+  await assert.rejects(access(new URL("index.html", projectRoot)));
   for (const asset of ["file.svg", "globe.svg", "window.svg"]) {
     await assert.rejects(access(new URL(`public/${asset}`, projectRoot)));
   }
